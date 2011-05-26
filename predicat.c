@@ -8,9 +8,7 @@
 #include <pwd.h>
 #include <grp.h>
 
-int stringToInt(char* string);
-void statWOError(char* path, struct stat *statFich);
-
+#include "predicat.h"
 
 int true()
 {
@@ -93,8 +91,8 @@ int stringToInt(char* string)
 
 	for(i=0;string[i]!='\0';i++) 
 	{
-		stringInt+= string[i]-'0';//manque gestion d'erreur
 		stringInt*=10;
+		stringInt+= string[i]-'0';//manque gestion d'erreur
 	}
 	
 	return stringInt;
