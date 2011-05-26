@@ -4,9 +4,13 @@
 
 #include <fnmatch.h>
 #include <unistd.h>
-#include <sys/type.h>
+//#include <sys/type.h>
 #include <sys/stat.h>
 #include <pwd.h>
+#include <grp.h>
+
+int stringToInt(char* string);
+
 
 int true()
 {
@@ -18,20 +22,17 @@ int false()
 	return 0;
 }
 
-int name(char* pattern, char* path)
+int name(char* pattern, char* name)
 {
-	struct stat statFich;
-	stat(path, &statFich);//manque gestion d'erreur
-
-	return !fnmatch(pattern, statFich.name, 0);
+	return !fnmatch(pattern, name, 0);
 }
 
-int type(char* typeRef,char* path)
+int type(char* typeRef,char* path) // plus compliqué en réalité
 {
 	struct stat statFich;
 	stat(path, &statFich);//manque gestion d'erreur
 	
-	return !strcmp(typeRef, statFich.type);
+	return stringToInt(typeRef) == statFich.st_mode;
 }
 
 int uid(char* refUID,char* path)
@@ -39,7 +40,7 @@ int uid(char* refUID,char* path)
 	struct stat statFich;
 	stat(path, &statFich);//manque gestion d'erreur
 	
-	return stat.uid_t == stringToInt(refUID);
+	return statFich.st_uid == stringToInt(refUID);
 }
 
 int gid (char* refGID,char* path)
@@ -47,29 +48,29 @@ int gid (char* refGID,char* path)
 	struct stat statFich;
 	stat(path, &statFich);//manque gestion d'erreur
 
-	return stat.gid_t == stringToInt(refGID);
+	return statFich.st_gid == stringToInt(refGID);
 }
 
 int user(char* User,char* path)
 {
 	struct stat statUser;
-	struct passwd statPUser;
+	struct passwd* statPUser;
 	
-	stat(path, statUser);//manque gestion d'erreur
-	getpwuid(statUser.uid_t, &statPUser);
+	stat(path, &statUser);//manque gestion d'erreur
+	statPUser = getpwuid(statUser.st_uid);
 
-	return !strcmp(User, statPUser.pw_name);   
+	return !strcmp(User, statPUser->pw_name);   
 }
     
 int group(char* Group,char* path)
 {
 	struct stat statGroup;
-	struct group statPGroup;
+	struct group* statPGroup;
 	
-	stat(path, statGroup);//manque gestion d'erreur
-	getgrnam(statGroup.gid_t, &statPGroup);
+	stat(path, &statGroup);//manque gestion d'erreur
+	statPGroup = getgrgid(statGroup.st_gid);
 
-	return !strcmp(Group, statPGroup.gr_name);
+	return !strcmp(Group, statPGroup->gr_name);
 }
 
 
@@ -83,7 +84,7 @@ int stringToInt(char* string)
 	for(i=0;string[i]!='\0';i++) 
 	{
 		stringInt+= string[i]-'0';//manque gestion d'erreur
-		strinInt*=10;
+		stringInt*=10;
 	}
 	
 	return stringInt;

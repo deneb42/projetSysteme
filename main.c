@@ -3,7 +3,7 @@
 
 int main(int argc, char* argv[])
 {
-	printf("%d\n", uid("root","predicat.c"));
+	printf("%d\n", user("lol","predicat.c"));
 	
 	return 0;
 }
