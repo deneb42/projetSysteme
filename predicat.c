@@ -29,8 +29,45 @@ int type(char* refType,char* path) // plus compliqué en réalité
 {
 	struct stat statFich;
 	statWOError(path, &statFich);
+	int type = statFich.st_mode & S_IFMT;
 	
-	return statFich.st_mode == stringToInt(refType);
+	switch(refType[0])
+	{
+		case 'f':
+			if(type==S_IFREG)
+				return 1;
+			break;
+		case 'd':
+			if(type==S_IFDIR)
+				return 1;
+			break;
+		case 'l':
+			if(type==S_IFLNK)
+				return 1;
+			break;
+		case 's':
+			if(type==S_IFSOCK)
+				return 1;
+			break;
+		case 'b':
+			if(type==S_IFBLK)
+				return 1;
+			break;
+		case 'c':
+			if(type==S_IFCHR)
+				return 1;
+			break;
+		case 'p':
+			if(type==S_IFIFO)
+				return 1;
+			break;
+		default:
+			perror("File type not valid error\n");
+			exit(EXIT_FAILURE);
+			break;
+	}
+	
+	return 0;
 }
 
 int uid(char* refUID,char* path)
@@ -49,7 +86,7 @@ int gid (char* refGID,char* path)
 	return statFich.st_gid == stringToInt(refGID);
 }
 
-int user(char* user,char* path)
+int user(char* refUser,char* path)
 {
 	struct stat statFich;
 	struct passwd* statUser;
@@ -62,10 +99,10 @@ int user(char* user,char* path)
 		exit(EXIT_FAILURE);
 	}
 
-	return !strcmp(user, statUser->pw_name);   
+	return !strcmp(refUser, statUser->pw_name);   
 }
     
-int group(char* group,char* path)
+int group(char* refGroup,char* path)
 {
 	struct stat statFich;
 	struct group* statGroup;
@@ -78,100 +115,40 @@ int group(char* group,char* path)
 		exit(EXIT_FAILURE);
 	}
 
-	return !strcmp(group, statGroup->gr_name);
+	return !strcmp(refGroup, statGroup->gr_name);
 }
 
-int atime(char* time, char* path)
+int atime(char* refTime, char* path)
 {
 	struct stat statFich;
-	int jours;
-	int parJours;
-	
 	statWOError(char* path, struct stat *statFich)
-	jours = floor ( difftime(time(), statFich.st_atime) / (3600*24));  //temps en jours
 	
-	if(time[0]=='+')
-	{
-		parJour=stringToInt(time+1);
-		if(jours>=parJours)
-			return 1;
-	}
-	else if(time[0]=='-')
-	{
-		parJour=stringToInt(time+1);
-		if(jours<=parJours)
-			return 1;
-	}
-	else
-	{
-		parJour=stringToInt(time);
-		if(jours==parJours)
-			return 1;
-	}
-	return 0;
+	return compTime(statFich.st_atime, refTime);
 }
 
-int ctime(char* time, char* path)
+int ctime(char* refTime, char* path)
 {
 	struct stat statFich;
-	int jours;
-	int parJours;
-	
 	statWOError(char* path, struct stat *statFich)
-	jours = floor ( difftime(time(), statFich.st_ctime) / (3600*24));  //temps en jours
 	
-	if(time[0]=='+')
-	{
-		parJour=stringToInt(time+1);
-		if(jours>=parJours)
-			return 1;
-	}
-	else if(time[0]=='-')
-	{
-		parJour=stringToInt(time+1);
-		if(jours<=parJours)
-			return 1;
-	}
-	else
-	{
-		parJour=stringToInt(time);
-		if(jours==parJours)
-			return 1;
-	}
-	return 0;
+	return compTime(statFich.st_ctime, refTime);
 }
 
-int mtime(char* time, char* path)
+int mtime(char* refTime, char* path) // voir la passage des paramètres 
 {
 	struct stat statFich;
-	int jours;
-	int parJours;
-	
 	statWOError(char* path, struct stat *statFich)
-	jours = floor ( difftime(time(), statFich.st_mtime) / (3600*24));  //temps en jours
 	
-	if(time[0]=='+')
-	{
-		parJour=stringToInt(time+1);
-		if(jours>=parJours)
-			return 1;
-	}
-	else if(time[0]=='-')
-	{
-		parJour=stringToInt(time+1);
-		if(jours<=parJours)
-			return 1;
-	}
-	else
-	{
-		parJour=stringToInt(time);
-		if(jours==parJours)
-			return 1;
-	}
-	return 0;
+	return compTime(statFich.st_mtime, refTime);
 }
 
-
+int perm(char* refPerm, char* path)
+{
+	struct stat statFich;
+	statWOError(char* path, struct stat *statFich)
+	
+	
+}
 
 // utils ------------------------------------------------------
 
@@ -196,4 +173,30 @@ void statWOError(char* path, struct stat *statFich)
 		perror("Stat lookup error\n");
 		exit(EXIT_FAILURE);
 	}
+}
+
+int compTime(time_t reference, char* comparetTo)
+{
+	int parJours;
+	int jours = floor ( difftime(time(), reference) / (3600*24));  //temps en jours
+	
+	if(comparetTo[0]=='+')
+	{
+		parJour=stringToInt(comparetTo+1);
+		if(jours>=parJours)
+			return 1;
+	}
+	else if(comparetTo[0]=='-')
+	{
+		parJour=stringToInt(comparetTo+1);
+		if(jours<=parJours)
+			return 1;
+	}
+	else
+	{
+		parJour=stringToInt(comparetTo);
+		if(jours==parJours)
+			return 1;
+	}
+	return 0;
 }
