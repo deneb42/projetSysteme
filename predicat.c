@@ -58,7 +58,7 @@ int user(char* user,char* path)
 	statUser = getpwuid(statFich.st_uid);
 	if(statUser==NULL) 
 	{
-		perror("Name recuperation error\n");
+		perror("Name lookup error\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -74,7 +74,7 @@ int group(char* group,char* path)
 	statGroup = getgrgid(statFich.st_gid);
 	if(statGroup==NULL) 
 	{
-		perror("Group recuperation error\n");
+		perror("Group lookup error\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -83,20 +83,92 @@ int group(char* group,char* path)
 
 int atime(char* time, char* path)
 {
-struct stat statFich;
+	struct stat statFich;
+	int jours;
+	int parJours;
+	
 	statWOError(char* path, struct stat *statFich)
+	jours = floor ( difftime(time(), statFich.st_atime) / (3600*24));  //temps en jours
+	
+	if(time[0]=='+')
+	{
+		parJour=stringToInt(time+1);
+		if(jours>=parJours)
+			return 1;
+	}
+	else if(time[0]=='-')
+	{
+		parJour=stringToInt(time+1);
+		if(jours<=parJours)
+			return 1;
+	}
+	else
+	{
+		parJour=stringToInt(time);
+		if(jours==parJours)
+			return 1;
+	}
+	return 0;
 }
 
 int ctime(char* time, char* path)
 {
-struct stat statFich;
+	struct stat statFich;
+	int jours;
+	int parJours;
+	
 	statWOError(char* path, struct stat *statFich)
+	jours = floor ( difftime(time(), statFich.st_ctime) / (3600*24));  //temps en jours
+	
+	if(time[0]=='+')
+	{
+		parJour=stringToInt(time+1);
+		if(jours>=parJours)
+			return 1;
+	}
+	else if(time[0]=='-')
+	{
+		parJour=stringToInt(time+1);
+		if(jours<=parJours)
+			return 1;
+	}
+	else
+	{
+		parJour=stringToInt(time);
+		if(jours==parJours)
+			return 1;
+	}
+	return 0;
 }
 
 int mtime(char* time, char* path)
 {
-struct stat statFich;
+	struct stat statFich;
+	int jours;
+	int parJours;
+	
 	statWOError(char* path, struct stat *statFich)
+	jours = floor ( difftime(time(), statFich.st_mtime) / (3600*24));  //temps en jours
+	
+	if(time[0]=='+')
+	{
+		parJour=stringToInt(time+1);
+		if(jours>=parJours)
+			return 1;
+	}
+	else if(time[0]=='-')
+	{
+		parJour=stringToInt(time+1);
+		if(jours<=parJours)
+			return 1;
+	}
+	else
+	{
+		parJour=stringToInt(time);
+		if(jours==parJours)
+			return 1;
+	}
+	return 0;
 }
 
 
@@ -121,7 +193,7 @@ void statWOError(char* path, struct stat *statFich)
 { // buffer func whitch handle errors during the call of stat()
 	if(stat(path, statFich)==-1)
 	{
-		perror("Stat recuperation error\n");
+		perror("Stat lookup error\n");
 		exit(EXIT_FAILURE);
 	}
 }
