@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "predicat.h"
+#include "utils.h"
 
 
 typedef int (*func)(char*,char*);
 
-func funcs[] = {name, type, uid, gid, user, group};
+func funcs[] = {name, type, uid, gid, user, group, aTime, cTime, mTime, perm};
 
 
 int main(int argc, char* argv[])
