@@ -25,7 +25,7 @@ int name(char* pattern, char* path)
 	return !fnmatch(pattern, path, 0);
 }
 
-int type(char* refType,char* path) // plus compliqué en réalité
+int type(char* refType,char* path)
 {
 	struct stat statFich;
 	statWOError(path, &statFich);
