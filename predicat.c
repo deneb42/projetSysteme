@@ -49,37 +49,56 @@ int gid (char* refGID,char* path)
 	return statFich.st_gid == stringToInt(refGID);
 }
 
-int user(char* User,char* path)
+int user(char* user,char* path)
 {
-	struct stat statUser;
-	struct passwd* statPUser;
+	struct stat statFich;
+	struct passwd* statUser;
 	
-	statWOError(path, &statUser);
-	statPUser = getpwuid(statUser.st_uid);
-	if(statPUser==NULL) 
+	statWOError(path, &statFich);
+	statUser = getpwuid(statFich.st_uid);
+	if(statUser==NULL) 
 	{
 		perror("Name recuperation error\n");
 		exit(EXIT_FAILURE);
 	}
 
-	return !strcmp(User, statPUser->pw_name);   
+	return !strcmp(user, statUser->pw_name);   
 }
     
-int group(char* Group,char* path)
+int group(char* group,char* path)
 {
-	struct stat statGroup;
-	struct group* statPGroup;
+	struct stat statFich;
+	struct group* statGroup;
 	
-	statWOError(path, &statGroup);
-	statPGroup = getgrgid(statGroup.st_gid);
-	if(statPGroup==NULL) 
+	statWOError(path, &statFich);
+	statGroup = getgrgid(statFich.st_gid);
+	if(statGroup==NULL) 
 	{
 		perror("Group recuperation error\n");
 		exit(EXIT_FAILURE);
 	}
 
-	return !strcmp(Group, statPGroup->gr_name);
+	return !strcmp(group, statGroup->gr_name);
 }
+
+int atime(char* time, char* path)
+{
+struct stat statFich;
+	statWOError(char* path, struct stat *statFich)
+}
+
+int ctime(char* time, char* path)
+{
+struct stat statFich;
+	statWOError(char* path, struct stat *statFich)
+}
+
+int mtime(char* time, char* path)
+{
+struct stat statFich;
+	statWOError(char* path, struct stat *statFich)
+}
+
 
 
 // utils ------------------------------------------------------
