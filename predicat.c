@@ -150,6 +150,13 @@ int perm(char* refPerm, char* path)
 	
 }
 
+int print()
+{
+	printf("Hugo suce des gros noeud")
+	
+	return 1;
+}
+
 // utils ------------------------------------------------------
 
 int stringToInt(char* string)
