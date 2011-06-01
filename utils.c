@@ -12,6 +12,21 @@ _____________________________________________________________*/
 
 #include "utils.h"
 
+void parcours(char *path, int depth)
+{
+	DIR *test = NULL;
+	struct dirent *test2 = NULL;
+	
+	test = opendir(path);
+	
+	while((test2 = readdir(test))!=NULL)
+	{
+		printf("%s\n", test2->d_name);
+		if(type("d", test2->d_name)
+			parcours(test2->d_name, depth+1);
+	}
+}
+
 int stringToInt(char* string)
 {
 	int i;
