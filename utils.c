@@ -9,21 +9,26 @@ _____________________________________________________________*/
 
 #include <unistd.h>
 #include <sys/stat.h>
+#include <dirent.h>
 
 #include "utils.h"
+#include "predicat.h"
 
 void parcours(char *path, int depth)
 {
 	DIR *test = NULL;
 	struct dirent *test2 = NULL;
+	char chemin[100];
 	
 	test = opendir(path);
 	
 	while((test2 = readdir(test))!=NULL)
 	{
-		printf("%s\n", test2->d_name);
-		if(type("d", test2->d_name)
-			parcours(test2->d_name, depth+1);
+		chemin = "";
+		strcat(chemin, path); strcat(chemin, test2->dname);
+		printf("%s%s\n", chemin);
+		if(type("d",chemin))
+			parcours(chemin, depth+1);
 	}
 }
 
@@ -45,7 +50,7 @@ void statWOError(char* path, struct stat *statFich)
 { // buffer func whitch handle errors during the call of stat()
 	if(stat(path, statFich)==-1)
 	{
-		perror("Stat lookup error\n");
+		perror("Stat lookup error");
 		exit(EXIT_FAILURE);
 	}
 }

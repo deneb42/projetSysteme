@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <dirent.h>
 #include "predicat.h"
 #include "utils.h"
 
