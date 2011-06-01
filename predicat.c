@@ -94,7 +94,7 @@ int gid (char* refGID,char* path)
 int user(char* refUser,char* path)
 {
 	struct stat statFich;
-	struct passwd* statUser;
+	struct passwd* statUser=NULL;
 	
 	statWOError(path, &statFich);
 	statUser = getpwuid(statFich.st_uid);
@@ -110,7 +110,7 @@ int user(char* refUser,char* path)
 int group(char* refGroup,char* path)
 {
 	struct stat statFich;
-	struct group* statGroup;
+	struct group* statGroup=NULL;
 	
 	statWOError(path, &statFich);
 	statGroup = getgrgid(statFich.st_gid);

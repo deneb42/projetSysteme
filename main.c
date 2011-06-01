@@ -12,8 +12,18 @@ func funcs[] = {name, type, uid, gid, user, group, aTime, cTime, mTime, perm};
 int main(int argc, char* argv[])
 {
 	int i;
+	DIR *test = NULL;
+	struct dirent test2 = NULL;
 	
-	if(argc != 4)
+	test = opendir(".");
+	
+	while((test2 = readdir(test))!=NULL)
+	{
+		printf("%s\n", test2->d_name);
+	}
+	
+	
+	/*if(argc != 4)
 	{
 		perror("Parametre de type 'n° de function' 'parametre' 'path'\n");
 		return 1;
@@ -27,6 +37,7 @@ int main(int argc, char* argv[])
 	printf("%d\n", stringToInt(argv[1]));
 	
 	printf("resultat : %d\n", funcs[stringToInt(argv[1])](argv[2],argv[3]));
+	*/
 	
 	return 0;
 }
