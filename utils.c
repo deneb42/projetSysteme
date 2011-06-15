@@ -10,25 +10,39 @@ _____________________________________________________________*/
 #include <unistd.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <string.h>
 
 #include "utils.h"
 #include "predicat.h"
 
-void parcours(char *path, int depth)
+void parcours(char *path, int depth, int minDepth, int maxDepth)
 {
 	DIR *test = NULL;
 	struct dirent *test2 = NULL;
-	char chemin[100];
+	char chemin[100] = "";
 	
 	test = opendir(path);
+	if(test==NULL)
+	{
+		printf("Erreur au chargement du fichier %s\n", path);
+		exit(EXIT_FAILURE);
+	}
 	
 	while((test2 = readdir(test))!=NULL)
 	{
-		chemin = "";
-		strcat(chemin, path); strcat(chemin, test2->dname);
-		printf("%s%s\n", chemin);
-		if(type("d",chemin))
-			parcours(chemin, depth+1);
+		if(test2->d_name[0]!='.')
+		{
+		chemin[0]= '\0';
+		strcat(chemin, path); strcat(chemin, "/");
+		strcat(chemin, test2->d_name);
+		
+		if(depth>=minDepth)
+		{ // traitement
+			printf("%s\n", chemin);
+		}
+		if(type("d",chemin) && depth<maxDepth)
+			parcours(chemin, depth+1, minDepth, maxDepth);
+		}
 	}
 }
 
