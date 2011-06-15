@@ -17,10 +17,12 @@ func funcs[] = {name, type, uid, gid, user, group, aTime, cTime, mTime, perm};
 int main(int argc, char* argv[])
 {
 	int i;
-	
+
 	if(argc != 4)
 	{
 		perror("Parametre de type 'n° de function' 'parametre' 'path'\n");
+		
+		parcours(argv[1], 0);
 		return 1;
 	}
 	
@@ -32,6 +34,7 @@ int main(int argc, char* argv[])
 	printf("%d\n", stringToInt(argv[1]));
 	
 	printf("resultat : %d\n", funcs[stringToInt(argv[1])](argv[2],argv[3]));
+	
 	
 	return 0;
 }
