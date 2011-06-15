@@ -1,11 +1,11 @@
 #|  Makefile for the System project |
 #|                                  |
 #|  by :deneb                       |
-#|  last modif : 26/05/11           |
+#|  last modif : 15/06/11           |
 #/__________________________________/
 
 
-INC_PATH = obj
+INC_PATH =
 LIB_PATH = 
 LIBRARY = 
 CFLAGS = -Wall
@@ -13,11 +13,11 @@ LDFALGS = $(LIB_PATH) $(LIBRARY)
 GCC=gcc
 
 # Name of the files (more .o)
-OBJS = utils.o predicat.o predicatLs.o main.o
+OBJS = utils.o param.o predicat.o predicatLs.o main.o
 # Path where the bin will be
-PATH_PGM = bin/
+PGM_PATH = ./
 # Name of the bin
-PGM = testPredicatLs
+PGM = testSysteme
 
 
 # For the generic utilisation, 
@@ -26,14 +26,14 @@ PGM = testPredicatLs
 
 # $(OBJS: =.o ) 
 all : $(OBJS) 
-	$(GCC) -o $(PATH_PGM)$(PGM) $(OBJS) $(LDFALGS) 
+	$(GCC) -o $(PGM_PATH)$(PGM) $(OBJS) $(LDFALGS) 
 
 # generic method for all the .o
 %.o : %.c
 	$(GCC) $(CFLAGS) $(INC_PATH) -c $< 
 
 run :
-	$(PATH_PGM)$(PGM)
+	$(PGM_PATH)$(PGM)
 
 clean :
-	-rm *.o *~ $(PATH_PGM)$(PGM)
+	-rm *.o *~ $(PGM_PATH)$(PGM)

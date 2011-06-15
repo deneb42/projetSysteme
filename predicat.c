@@ -1,6 +1,6 @@
 /*  Find                        	predicat.c
 
-By : deneb, nigaud					Last Modif : 31/05/11
+By : deneb, Hugo					Last Modif : 31/05/11
 _____________________________________________________________*/
 
 #include <stdio.h>

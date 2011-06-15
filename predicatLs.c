@@ -1,3 +1,8 @@
+/*  Find                        	predicatLs.c
+
+By : Hugo							Last Modif : 31/05/11
+_____________________________________________________________*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
