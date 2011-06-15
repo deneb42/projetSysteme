@@ -5,16 +5,17 @@
 #/__________________________________/
 
 
-LIBPATH = 
+INC_PATH = obj
+LIB_PATH = 
 LIBRARY = 
 CFLAGS = -Wall
-LDFALGS = $(LIBPATH) $(LIBRARY)
+LDFALGS = $(LIB_PATH) $(LIBRARY)
 GCC=gcc
 
 # Name of the files (more .o)
 OBJS = utils.o predicat.o main.o
 # Path where the bin will be
-PATH_PGM = ./
+PATH_PGM = bin/
 # Name of the bin
 PGM = testSystem
 
