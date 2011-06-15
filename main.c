@@ -1,3 +1,8 @@
+/*  Find                        	main.c
+
+By : deneb							Last Modif : 31/05/11
+_____________________________________________________________*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "predicat.h"
