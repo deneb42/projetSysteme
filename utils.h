@@ -5,7 +5,7 @@
 
 #include <sys/stat.h>
 
-void parcours(char *path, int depth);
+void parcours(char *path, int depth, int minDepth, int maxDepth);
 int stringToInt(char* string);
 void statWOError(char* path, struct stat *statFich);
 int compTime(time_t reference, char* comparetTo);

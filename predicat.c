@@ -154,10 +154,3 @@ int perm(char* refPerm, char* path)
 	
 	return 0;
 }
-
-int print()
-{
-	printf("Hugo suce des gros noeud");
-	
-	return 1;
-}

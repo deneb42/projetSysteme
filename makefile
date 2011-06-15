@@ -13,17 +13,18 @@ LDFALGS = $(LIB_PATH) $(LIBRARY)
 GCC=gcc
 
 # Name of the files (more .o)
-OBJS = utils.o predicat.o main.o
+OBJS = utils.o predicat.o predicatLs.o main.o
 # Path where the bin will be
 PATH_PGM = bin/
 # Name of the bin
-PGM = testSystem
+PGM = testPredicatLs
 
 
 # For the generic utilisation, 
 # DO NOT TOUCH ANYTHING UNDER THIS LINE !!!
 # ___________________________________________
 
+# $(OBJS: =.o ) 
 all : $(OBJS) 
 	$(GCC) -o $(PATH_PGM)$(PGM) $(OBJS) $(LDFALGS) 
 
