@@ -38,24 +38,24 @@ int getParam(int** tab, char*** param, char* argv[], int argc)
 				if(!strcmp(argv[i]+1,nom[j]))
 					index = j;
 			}
+			
 			if(index<0)
 			{
 				printf("Parametre incorrect : %s\n", argv[i]+1);
+				for(i=0;i<n;i++)
+					free((*param)[i]);
+				free(*tab);
+				free(tab);
+				free(*param);
+				free(param);
 				exit(EXIT_FAILURE);
 			}
+			
 			(*tab)[n]=index;
 			if(index>WOARG)
 			{
-				(*param)[n] = (char*)malloc(strlen(argv[i+1])); // voir a utiliser sizeof()
-				if(argv[i+1][0]=='\"') // peut etre besoin d'un "\"
-				{
-					printf("lulilolz : %s\n",argv[i+1]); 
-					strcpy((*param)[n], argv[i+1]+1);
-					(*param)[n][strlen((*param)[n])-1]='\0'; // strlen -1 = dernier caractère
-					
-				}
-				else
-					strcpy((*param)[n], argv[i+1]);
+				(*param)[n] = (char*)malloc(strlen(argv[i+1])+1); // voir a utiliser sizeof()
+				strcpy((*param)[n], argv[i+1]);
 				i++;
 			}
 			n++;	
@@ -64,7 +64,7 @@ int getParam(int** tab, char*** param, char* argv[], int argc)
 	return nbParam;
 }
 
-void freeParam(int tab[], char* param[], int nbParam)  // faux, il faut trouver comment get le nb param
+void freeParam(int tab[], char* param[], int nbParam)
 {
 	int i;
 	free(tab);

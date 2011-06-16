@@ -21,7 +21,9 @@ int main(int argc, char* argv[])
 	int i, n, **tab;
 	char*** param;
 
-	/*if(argc != 4)
+	/* test prédicats && parcours
+
+	if(argc != 4)
 	{
 		//perror("Parametre de type 'n° de function' 'parametre' 'path'\n");
 		
@@ -38,8 +40,9 @@ int main(int argc, char* argv[])
 	printf("%d\n", stringToInt(argv[1]));
 	
 	printf("resultat : %d\n", funcs[stringToInt(argv[1])](argv[2],argv[3]));
-	*/
+	//*/
 	
+	//* test lecture parametres
 	tab = (int**)malloc(sizeof(int*));
 	param = (char***)malloc(sizeof(char**));
 	
@@ -53,5 +56,7 @@ int main(int argc, char* argv[])
 	freeParam(*tab, *param, n);
 	free(tab);
 	free(param);
+	// */
+	
 	return 0;
 }

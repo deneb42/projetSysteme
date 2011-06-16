@@ -8,7 +8,7 @@
 INC_PATH =
 LIB_PATH = 
 LIBRARY = 
-CFLAGS = -Wall
+CFLAGS = -Wall -g
 LDFALGS = $(LIB_PATH) $(LIBRARY)
 GCC=gcc
 
@@ -26,7 +26,7 @@ PGM = testSysteme
 
 # $(OBJS: =.o ) 
 all : $(OBJS) 
-	$(GCC) -o $(PGM_PATH)$(PGM) $(OBJS) $(LDFALGS) 
+	$(GCC) -g -o $(PGM_PATH)$(PGM) $(OBJS) $(LDFALGS) 
 
 # generic method for all the .o
 %.o : %.c
