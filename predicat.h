@@ -3,8 +3,8 @@
 #ifndef PREDICAT_H
 #define PREDICAT_H
 
-int true();
-int false();
+int true(char* osef, char* path);
+int false(char* osef, char* path);
 int name(char* pattern, char* path);
 int type(char* refType,char* path);
 int uid(char* refUID,char* path);

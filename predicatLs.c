@@ -1,6 +1,6 @@
 /*  Find                        	predicatLs.c
 
-By : Hugo							Last Modif : 31/05/11
+By : Hugo, deneb					Last Modif : 21/06/11
 _____________________________________________________________*/
 
 #include <stdio.h>
@@ -9,7 +9,7 @@ _____________________________________________________________*/
 #include <time.h>
 
 
-int print(char*path)
+int print(char* osef, char*path)
 {
     printf ("nom complet du fichier : %s \n",path);
     return 1;
@@ -29,7 +29,7 @@ int print(char*path)
   ((statFich.st_mode & S_IXOTH) != 0) ? putstr("x") : putstr("-");
 }*/
 
-int ls(char* path)
+int ls(char* osef, char* path)
 {
      struct stat    statFich;
      stat(path, &statFich);
@@ -49,4 +49,14 @@ int ls(char* path)
     printf ("%s\n",path);
     free(ptr);
     return 1;
+}
+
+int exec(char* osef, char*path)
+{
+	return 1;
+}
+
+int prune(char* osef, char*path)
+{
+	return 1;
 }

@@ -1,6 +1,6 @@
 /*  Find                        	predicat.c
 
-By : deneb, Hugo					Last Modif : 31/05/11
+By : deneb, Hugo					Last Modif : 21/06/11
 _____________________________________________________________*/
 
 #include <stdio.h>
@@ -15,12 +15,12 @@ _____________________________________________________________*/
 
 #include "utils.h"
 
-int true()
+int true(char* osef, char* path)
 {
 	return 1;
 }
 
-int false()
+int false(char* osef, char* path)
 {
 	return 0;
 }

@@ -7,8 +7,10 @@
 #include <time.h>
 
 
-int print(char*path);
+int print(char* osef, char*path);
 void print_rights(struct stat statFich);
-int ls(char* path);
+int ls(char* osef, char* path);
+int exec(char* osef, char*path);
+int prune(char* osef, char*path);
 
 #endif

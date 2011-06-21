@@ -1,6 +1,6 @@
 /*  Find                        	param.c
 
-By : deneb, Hugo					Last Modif : 15/06/11
+By : deneb, Hugo					Last Modif : 21/06/11
 _____________________________________________________________*/
 
 #include <stdio.h>
@@ -14,19 +14,25 @@ const char *nom[] = {
 #define NNAMES (sizeof(nom) / sizeof(nom[0]))
 #define WOARG 4
 
-int getParam(int** tab, char*** param, char* argv[], int argc)
+int getParam(int* nbPath, int** tab, char*** param, char* argv[], int argc)
 {
-	int i, n=0, nbParam=0;
+	int i=1, n=0, nbParam=0;
+	(*nbPath)=0;
 	
+	while(i<argc && argv[i][0]!='-')
+	{
+		(*nbPath)++;
+		i++;
+	}
 	
-	for (i=0;i<argc;i++)
+	for (;i<argc;i++)
 	{
 		if(argv[i][0]=='-')
 			nbParam++;
 	}
 	(*tab) = (int*)malloc(nbParam*sizeof(int));
 	(*param) = (char**)malloc(nbParam*sizeof(char*));
-	
+		
 	for (i=0;i<argc;i++)
 	{
 		if(argv[i][0]=='-')
