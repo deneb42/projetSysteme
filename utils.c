@@ -26,8 +26,9 @@ void parcours(char *path, int minDepth, int maxDepth, int tab[], char* param[], 
 {
 	if(maxDepth==0)
 	{
-		//if(process(chemin, tab, param, nbParam))
-			printf("%s\n", path); // debug
+		//if(
+		process(path, tab, param, nbParam);
+			//printf("%s\n", path); // debug
 		return;
 	}
 	
@@ -61,8 +62,9 @@ void parcours_recur(char *path, int depth, int minDepth, int maxDepth, int tab[]
 			
 			if(depth>=minDepth)
 			{ // traitement
-				//if(process(chemin, tab, param, nbParam))
-					printf("%s\n", chemin); // debug
+				//if(
+				process(chemin, tab, param, nbParam);
+					//printf("%s\n", chemin); // debug
 			}
 
 			if(type("d",chemin) && depth!=maxDepth && strcmp("/proc", chemin))

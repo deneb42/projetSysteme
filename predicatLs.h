@@ -8,7 +8,6 @@
 
 
 int print(char* osef, char*path);
-void print_rights(struct stat statFich);
 int ls(char* osef, char* path);
 int exec(char* osef, char*path);
 int prune(char* osef, char*path);
