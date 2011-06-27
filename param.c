@@ -60,7 +60,7 @@ int getParam(int* nbPath, int** tab, char*** param, char* argv[], int argc)
 			(*tab)[n]=index;
 			if(index>WOARG)
 			{
-				(*param)[n] = (char*)malloc(strlen(argv[i+1])+1); // voir a utiliser sizeof()
+				(*param)[n] = (char*)malloc(strlen(argv[i+1])+1);
 				strcpy((*param)[n], argv[i+1]);
 				i++;
 			}

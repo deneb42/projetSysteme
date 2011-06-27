@@ -1,9 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include <time.h>
+#include <pwd.h>
+#include <grp.h>
 
 #define SIZE_DATE 17
+#define SIZE_BUF 100
 
 
 int print(char* osef, char* path)
@@ -12,12 +16,29 @@ int print(char* osef, char* path)
     return 1;
 }
 
-int ls(char* osef, char* path)
+int ls(char* osef, char* path) // manque cible du lien
 {
 	struct stat statFich;
-	stat(path, &statFich);
+	struct passwd* statUser=NULL;
+	struct group* statGroup=NULL;
+	
 	char smode[]= "----------";
 	char date[SIZE_DATE];
+	char linkTarget[100] = "?";
+	
+	if(lstat(path, &statFich)==-1); // tester le succes en lecture
+	{
+		printf ("     ? ");
+		printf ("   ? ");
+		printf ("?????????? ");
+		printf ("  ? ");
+		printf ("?        ");
+		printf ("?        ");
+		printf ("   ? ");
+		printf ("???-??-?? ??:?? ");
+		printf ("%s",path);
+		return 1;
+	}
 	
 	// perm autre
 	if ((statFich.st_mode & S_IXOTH) != 0) smode[9]='x';
@@ -33,31 +54,45 @@ int ls(char* osef, char* path)
 	if ((statFich.st_mode & S_IRUSR) != 0) smode[1]='r';
 
 	//type de fichier
-	if((statFich.st_mode & S_IFDIR) != 0) smode[0]='d'; // problème : merde a cause du 1 (premier champ du masque)
-	else if((statFich.st_mode & S_IFREG) != 0) smode[0]='-';
-	else if((statFich.st_mode & S_IFLNK) != 0) smode[0]='l';
-	else if((statFich.st_mode & S_IFSOCK) != 0) smode[0]='s';
-	else if((statFich.st_mode & S_IFBLK) != 0) smode[0]='b';
-	else if((statFich.st_mode & S_IFCHR) != 0) smode[0]='c';
+	if(S_ISREG(statFich.st_mode)) smode[0]='-';
+	else if(S_ISDIR(statFich.st_mode)) smode[0]='d';
+	else if(S_ISLNK(statFich.st_mode)) smode[0]='l';
+	else if(S_ISSOCK(statFich.st_mode)) smode[0]='s';
+	else if(S_ISBLK(statFich.st_mode)) smode[0]='b';
+	else if(S_ISFIFO(statFich.st_mode)) smode[0]='c';
 
 	//permissions étendues
 	if((statFich.st_mode & S_ISUID)!=0) smode[3] = (statFich.st_mode & S_IXUSR) ? 's' : 'S';
 	if((statFich.st_mode & S_ISGID)!=0) smode[6] = (statFich.st_mode & S_IXGRP) ? 's' : 'S';
 	if((statFich.st_mode & S_ISVTX)!=0) smode[9] = (statFich.st_mode & S_IXOTH) ? 't' : 'T';
-
-
-	// afficher nom d'util et groupe au lieu du uid gid, besoin no ino et nb block ?
-	printf ("%ld ",statFich.st_ino);
-	// print("%j", (uintmax_t)(var)); // cast en le plus grand int representable et l'affiche
-	printf ("%2ld ",statFich.st_blocks);
-	printf ("%s ",smode);
-	printf ("%d ",statFich.st_nlink);
-	printf ("%d ",statFich.st_uid);
-	printf ("%d ",statFich.st_gid);
-	printf ("%lu",statFich.st_size);
+	
+	statUser = getpwuid(statFich.st_uid);
+	statGroup = getgrgid(statFich.st_gid);
 	strftime(date, SIZE_DATE, "%Y-%m-%d %H:%M", localtime(&statFich.st_mtime));
+
+
+	printf ("%6ld ",statFich.st_ino);
+	// print("%j", (uintmax_t)(var)); // cast en le plus grand int representable et l'affiche
+	printf ("%4ld ",statFich.st_blocks);
+	printf ("%s ",smode);
+	printf ("%3d ",statFich.st_nlink);
+	if(statUser==NULL)
+		printf ("%-8d ", statFich.st_uid);
+	else
+		printf ("%-8s ", statUser->pw_name);
+	if(statGroup==NULL)
+		printf ("%-8d ", statFich.st_gid);
+	else
+		printf ("%-8s ", statGroup->gr_name);
+	printf ("%4lu ",statFich.st_size);
 	printf ("%s ",date);
-	printf ("%s\n",path);
+	printf ("%s",path);
+	if(smode[0]=='l')
+	{
+		readlink(path, linkTarget, SIZE_BUF);
+		printf("->%s", linkTarget);
+	}
+	printf("\n");
 
 	return 1;
 }
@@ -90,8 +125,6 @@ return 0;
 }
 
 int prune (char* param, char* path)
-{/*
- if (depth==0) return 1;
-
- else */return 0;
+{
+	return 1;
 }

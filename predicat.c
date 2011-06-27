@@ -15,19 +15,20 @@ _____________________________________________________________*/
 
 #include "utils.h"
 
-int true(char* osef, char* path)
+int true(char* useless, char* path)
 {
 	return 1;
 }
 
-int false(char* osef, char* path)
+int false(char* useless, char* path)
 {
 	return 0;
 }
 
 int name(char* pattern, char* path)
 {
-	return !fnmatch(pattern, path, 0);
+	return !fnmatch(pattern, path, 0); 
+	// ! needed because fnmatch return 0 if it match, and here we use 0 as false (like in boolean operation in c)
 }
 
 int type(char* refType,char* path)
@@ -67,7 +68,7 @@ int type(char* refType,char* path)
 				return 1;
 			break;
 		default:
-			perror("File type not valid error\n");
+			perror("type given is not a valid type");
 			exit(EXIT_FAILURE);
 			break;
 	}
@@ -151,6 +152,6 @@ int perm(char* refPerm, char* path)
 {
 	struct stat statFich;
 	statWOError(path, &statFich);
-	
+	 // a faire
 	return 0;
 }
