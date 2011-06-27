@@ -82,10 +82,10 @@ int process(char *chemin, int tab[], char* param[], int nbParam)
 		{
 			if(tab[i]>=END_OP) // si on a affaire a un prédicat
 			{
-				if(isTrue) // dans le cas d'un et
+				if(isTrue) // dans le cas d'un "et"
 					returnValue = (funcs[tab[i]](param[i], chemin));
 				else
-					returnValue=0;
+					returnValue=0; //si on a un faux, on n'applique pas la fonction
 			}
 			else // sinon on a affaire a un opperateur
 			{
@@ -101,7 +101,7 @@ int process(char *chemin, int tab[], char* param[], int nbParam)
 				}
 				else 
 				{
-					if(isTrue || tab[i+1]!=PRED_AND) si on a un faux, on n'applique pas la fonction
+					if(isTrue || tab[i+1]!=PRED_AND) //si on a un faux, on n'applique pas la fonction
 						returnValue = (funcs[tab[i+1]](param[i+1], chemin));
 					else
 						returnValue=0;

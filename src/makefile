@@ -13,7 +13,7 @@ LDFALGS = $(LIB_PATH) $(LIBRARY)
 GCC=gcc
 
 # Name of the files (more .o)
-OBJS = utils.o param.o parcour.o predicat.o predicatLs.o exec.o main.o
+OBJS = utils.o param.o parcour.o predicat.o predicatLs.o main.o
 # Path where the bin will be
 PGM_PATH = ../
 # Name of the bin

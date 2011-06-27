@@ -106,28 +106,35 @@ int ls(char* osef, char* path) // manque cible du lien
 
 
 int exec (char* param, char* path)
-{/*
-    pid_t pid;
-	char elem = fgets(
-	//find . -exec ls {} \; system(execString);
+{    
+	/*
+	char** elems;
 	
-	switch( pid = fork ()){
-		case -1 : perror ("fork");return 0;
-		case 0 : if (param[0]!= NULL)
+	// manque découpage et allocation de elems
+	
+	switch(fork())
+	{
+		case -1:
+			perror ( "echec du fork");
+			return -1;
+		case 0:
+			wait(&returnValue);
+			return returnValue;
+		default:
+			if(res2 != NULL)
+			{
+				if(pipe(fds) == -1)
 				{
-					close(1);
-					printf("pas de paramètre!");
+					perror("pipe");
+					return -1;
 				}
-				
-				else  
-				{ 
-				
-				}
-		
-   }
-
-*/
-return 0;
+			}
+			execv(path, elems);
+			exit(2)
+			break;
+	}*/
+	// manque free
+	return 0;
 }
 
 int prune (char* param, char* path)
