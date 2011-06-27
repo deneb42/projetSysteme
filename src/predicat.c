@@ -1,6 +1,6 @@
 /*  Find                        	predicat.c
 
-By : deneb, Hugo					Last Modif : 21/06/11
+By : deneb, Hugo					Last Modif : 27/06/11
 _____________________________________________________________*/
 
 #include <stdio.h>
@@ -25,9 +25,15 @@ int false(char* useless, char* path)
 	return 0;
 }
 
-int name(char* pattern, char* path) // on doit retirer les repertoires d'en tete
+int name(char* pattern, char* path)
 {
-	return !fnmatch(pattern, path, 0); 
+	char* name = strrchr(path, '/');
+	
+	if(name!=NULL)
+		return !fnmatch(pattern, name+1, 0); 
+	else
+		return !fnmatch(pattern, path, 0); 
+	
 	// ! needed because fnmatch return 0 if it match, and here we use 0 as false (like in boolean operation in c)
 }
 
@@ -68,8 +74,7 @@ int type(char* refType,char* path)
 				return 1;
 			break;
 		default:
-			perror("type given is not a valid type");
-			exit(EXIT_FAILURE);
+			printf("type %c is not a valid type", refType[0]);
 			break;
 	}
 	
@@ -101,8 +106,8 @@ int user(char* refUser,char* path)
 	statUser = getpwuid(statFich.st_uid);
 	if(statUser==NULL) 
 	{
-		perror("Name lookup error\n");
-		exit(EXIT_FAILURE);
+		printf("> error : username lookup failure : %s\n", path);
+		return 0;
 	}
 
 	return !strcmp(refUser, statUser->pw_name);   
@@ -117,8 +122,8 @@ int group(char* refGroup,char* path)
 	statGroup = getgrgid(statFich.st_gid);
 	if(statGroup==NULL) 
 	{
-		perror("Group lookup error\n");
-		exit(EXIT_FAILURE);
+		printf("> error : group lookup failure : %s\n", path);
+		return 0;
 	}
 
 	return !strcmp(refGroup, statGroup->gr_name);
@@ -140,7 +145,7 @@ int cTime(char* refTime, char* path)
 	return compTime(statFich.st_ctime, refTime);
 }
 
-int mTime(char* refTime, char* path) // voir la passage des paramètres 
+int mTime(char* refTime, char* path)
 {
 	struct stat statFich;
 	statWOError(path, &statFich);

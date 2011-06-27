@@ -6,13 +6,11 @@ _____________________________________________________________*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <math.h>
+#include <limits.h>
 #include <unistd.h>
 #include <sys/stat.h>
 
 #include "utils.h"
-
-#define MAX_INT pow(2, 8*sizeof(int)-1) // -1 cause the last bit set if it's +/-
 
 
 int stringToInt(char* string)
@@ -23,7 +21,7 @@ int stringToInt(char* string)
 
 	for(i=0;string[i]!='\0';i++) 
 	{
-		if((intValue*10 + string[i]-'0') < MAX_INT)
+		if((intValue*10 + string[i]-'0') < INT_MAX)
 		{
 			intValue*= 10;
 			intValue+= string[i]-'0'; // - '0' trasform the ASCII value to int value
