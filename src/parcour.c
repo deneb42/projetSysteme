@@ -62,12 +62,22 @@ void parcours_recur(char *path, int depth, int minDepth, int maxDepth, int tab[]
 
 int process(char *chemin, int tab[], char* param[], int nbParam)
 {
-	int i, isTrue = 1;
+	int i, isTrue = 1, returnValue;
 	
 	for(i=0; i<nbParam && isTrue;i++)
 	{
 		if(tab[i]>=0)
-			isTrue = isTrue && (funcs[tab[i]](param[i], chemin));
+		{
+			returnValue = (funcs[tab[i]](param[i], chemin));
+			
+			if(returnValue<0)
+			{
+				freeParam(tab, param, nbParam);
+				return EXIT_FAILURE;
+			}
+			
+			isTrue = isTrue && returnValue;
+		}
 	}
 	
 	return isTrue;

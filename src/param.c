@@ -102,6 +102,7 @@ void freeParam(int tab[], char* param[], int nbParam)
 	
 	free(tab);
 	for(i=0;i<n;i++)
-		free(param[i]);
+		if(param[i]!=NULL)
+			free(param[i]);
 	free(param);
 }

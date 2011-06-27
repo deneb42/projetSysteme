@@ -6,7 +6,6 @@ _____________________________________________________________*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <fnmatch.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -15,27 +14,29 @@ _____________________________________________________________*/
 
 #include "utils.h"
 
+
 int true(char* useless, char* path)
 {
 	return 1;
 }
+
 
 int false(char* useless, char* path)
 {
 	return 0;
 }
 
+
 int name(char* pattern, char* path)
 {
 	char* name = strrchr(path, '/');
 	
 	if(name!=NULL)
-		return !fnmatch(pattern, name+1, 0); 
+		return fnmatch(pattern, name+1, 0)==0; 
 	else
-		return !fnmatch(pattern, path, 0); 
-	
-	// ! needed because fnmatch return 0 if it match, and here we use 0 as false (like in boolean operation in c)
+		return fnmatch(pattern, path, 0)==0; 
 }
+
 
 int type(char* refType,char* path)
 {
@@ -74,89 +75,137 @@ int type(char* refType,char* path)
 				return 1;
 			break;
 		default:
-			printf("type %c is not a valid type", refType[0]);
-			break;
+			printf("> error : type %c is not valid\n", refType[0]);
+			return -1;
 	}
 	
 	return 0;
 }
 
+
 int uid(char* refUID,char* path)
 {
 	struct stat statFich;
-	statWOError(path, &statFich);
+	
+	if(lstat(path, statFich)==-1)
+	{
+		printf("> error : stat lookup failure : %s \n", path);
+		return -1;
+	}
 
 	return statFich.st_uid == stringToInt(refUID);
 }
 
+
 int gid (char* refGID,char* path)
 {
 	struct stat statFich;
-	statWOError(path, &statFich);
+	
+	if(lstat(path, statFich)==-1)
+	{
+		printf("> error : stat lookup failure : %s \n", path);
+		return -1;
+	}
 
 	return statFich.st_gid == stringToInt(refGID);
 }
+
 
 int user(char* refUser,char* path)
 {
 	struct stat statFich;
 	struct passwd* statUser=NULL;
 	
-	statWOError(path, &statFich);
+	if(lstat(path, statFich)==-1)
+	{
+		printf("> error : stat lookup failure : %s \n", path);
+		return -1;
+	}
+	
 	statUser = getpwuid(statFich.st_uid);
 	if(statUser==NULL) 
 	{
 		printf("> error : username lookup failure : %s\n", path);
-		return 0;
+		return -1;
 	}
 
-	return !strcmp(refUser, statUser->pw_name);   
+	return strcmp(refUser, statUser->pw_name)==0;   
 }
+
     
 int group(char* refGroup,char* path)
 {
 	struct stat statFich;
 	struct group* statGroup=NULL;
 	
-	statWOError(path, &statFich);
+	if(lstat(path, statFich)==-1)
+	{
+		printf("> error : stat lookup failure : %s \n", path);
+		return -1
+	}
+	
 	statGroup = getgrgid(statFich.st_gid);
 	if(statGroup==NULL) 
 	{
 		printf("> error : group lookup failure : %s\n", path);
-		return 0;
+		return -1;
 	}
 
-	return !strcmp(refGroup, statGroup->gr_name);
+	return strcmp(refGroup, statGroup->gr_name)==0;
 }
+
 
 int aTime(char* refTime, char* path)
 {
 	struct stat statFich;
-	statWOError(path, &statFich);
+	
+	if(lstat(path, statFich)==-1)
+	{
+		printf("> error : stat lookup failure : %s \n", path);
+		return -1;
+	}
 	
 	return compTime(statFich.st_atime, refTime);
 }
 
+
 int cTime(char* refTime, char* path)
 {
 	struct stat statFich;
-	statWOError(path, &statFich);
+	
+	if(lstat(path, statFich)==-1)
+	{
+		printf("> error : stat lookup failure : %s \n", path);
+		return -1;
+	}
 	
 	return compTime(statFich.st_ctime, refTime);
 }
 
+
 int mTime(char* refTime, char* path)
 {
 	struct stat statFich;
-	statWOError(path, &statFich);
+	
+	if(lstat(path, statFich)==-1)
+	{
+		printf("> error : stat lookup failure : %s \n", path);
+		return -1;
+	}
 	
 	return compTime(statFich.st_mtime, refTime);
 }
 
+
 int perm(char* refPerm, char* path)
 {
 	struct stat statFich;
-	statWOError(path, &statFich);
+	
+	if(lstat(path, statFich)==-1)
+	{
+		printf("> error : stat lookup failure : %s \n", path);
+		return -1;
+	}
 	 // a faire
 	return 0;
 }
