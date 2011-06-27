@@ -10,6 +10,8 @@ _____________________________________________________________*/
 #include "utils.h"
 #include "param.h"
 
+//use atexit pour les libérations mémoires
+
 
 int main(int argc, char* argv[])
 {
