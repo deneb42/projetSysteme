@@ -1,3 +1,8 @@
+/*  Find                        	predicatLs.c
+
+By : Hugo, deneb					Last Modif : 27/06/11
+_____________________________________________________________*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -26,7 +31,7 @@ int ls(char* osef, char* path) // manque cible du lien
 	char date[SIZE_DATE];
 	char linkTarget[100] = "?";
 	
-	if(lstat(path, &statFich)==-1); // tester le succes en lecture
+	if(lstat(path, &statFich)==-1) // tester le succes en lecture
 	{
 		printf ("     ? ");
 		printf ("   ? ");
@@ -35,8 +40,8 @@ int ls(char* osef, char* path) // manque cible du lien
 		printf ("?        ");
 		printf ("?        ");
 		printf ("   ? ");
-		printf ("???-??-?? ??:?? ");
-		printf ("%s",path);
+		printf ("??\?-?\?-?\? ?\?:?\? ");
+		printf ("%s\n",path);
 		return 1;
 	}
 	

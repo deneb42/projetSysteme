@@ -1,4 +1,4 @@
-/*  Find					predicat.h					By : deneb */
+/*  Find					predicat.h					By : deneb, Hugo */
 
 #ifndef PREDICAT_H
 #define PREDICAT_H

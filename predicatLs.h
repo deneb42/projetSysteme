@@ -1,3 +1,5 @@
+/*  Find					predicatLs.h					By : deneb, Hugo */
+
 #ifndef PREDICATLS_H
 #define PREDICATLS_H
 

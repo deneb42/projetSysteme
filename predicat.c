@@ -25,7 +25,7 @@ int false(char* useless, char* path)
 	return 0;
 }
 
-int name(char* pattern, char* path)
+int name(char* pattern, char* path) // on doit retirer les repertoires d'en tete
 {
 	return !fnmatch(pattern, path, 0); 
 	// ! needed because fnmatch return 0 if it match, and here we use 0 as false (like in boolean operation in c)

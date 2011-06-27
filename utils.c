@@ -24,15 +24,11 @@ func funcs[] = {print, ls, prune, true, false, name, type, uid, gid, user, group
 
 void parcours(char *path, int minDepth, int maxDepth, int tab[], char* param[], int nbParam)
 {
-	if(maxDepth==0)
-	{
-		//if(
+	if(minDepth<1)
 		process(path, tab, param, nbParam);
-			//printf("%s\n", path); // debug
-		return;
-	}
-	
-	parcours_recur(path, 1, minDepth, maxDepth, tab, param, nbParam);
+		
+	if(maxDepth>0)
+		parcours_recur(path, 1, minDepth, maxDepth, tab, param, nbParam);
 }
 
 void parcours_recur(char *path, int depth, int minDepth, int maxDepth, int tab[], char* param[], int nbParam)
@@ -61,13 +57,9 @@ void parcours_recur(char *path, int depth, int minDepth, int maxDepth, int tab[]
 			strcat(chemin, test2->d_name);
 			
 			if(depth>=minDepth)
-			{ // traitement
-				//if(
 				process(chemin, tab, param, nbParam);
-					//printf("%s\n", chemin); // debug
-			}
 
-			if(type("d",chemin) && depth!=maxDepth && strcmp("/proc", chemin))
+			if(type("d",chemin) && depth!=maxDepth)
 				parcours_recur(chemin, depth+1, minDepth, maxDepth, tab, param, nbParam);
 		}
 	}
@@ -81,7 +73,8 @@ int process(char *chemin, int tab[], char* param[], int nbParam)
 	
 	for(i=0; i<nbParam && isTrue;i++)
 	{
-		isTrue = isTrue && (funcs[tab[i]](param[i], chemin));
+		if(tab[i]>0)
+			isTrue = isTrue && (funcs[tab[i]](param[i], chemin));
 	}
 	
 	return isTrue;
