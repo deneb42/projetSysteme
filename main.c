@@ -5,10 +5,13 @@ _____________________________________________________________*/
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "predicat.h"
 #include "predicatLs.h"
 #include "utils.h"
 #include "param.h"
+// si pas de chemin, chemin courant
+
 
 //use atexit pour les libérations mémoires
 
