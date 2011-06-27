@@ -11,6 +11,7 @@ _____________________________________________________________*/
 #include <time.h>
 #include <pwd.h>
 #include <grp.h>
+#include <stdio.h>
 
 #define SIZE_DATE 17
 #define SIZE_BUF 100
@@ -18,8 +19,8 @@ _____________________________________________________________*/
 
 int print(char* osef, char* path)
 {
-   printf ("%s \n",path);
-    return 1;
+	printf ("%s \n",path);
+	return 1;
 }
 
 int ls(char* osef, char* path) // manque cible du lien

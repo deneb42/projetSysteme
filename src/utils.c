@@ -7,8 +7,6 @@ _____________________________________________________________*/
 #include <stdlib.h>
 #include <time.h>
 #include <limits.h>
-#include <unistd.h>
-#include <sys/stat.h>
 
 #include "utils.h"
 
@@ -45,7 +43,7 @@ int compTime(time_t reference, char* comparetTo)
 	if(comparetTo[0]=='+')
 	{
 		parJours=stringToInt(comparetTo+1);
-		if(parJour<0)// gestion erreur
+		if(parJours<0)// gestion erreur
 			return -1;
 		if(jours>=parJours)
 			return 1;
@@ -53,7 +51,7 @@ int compTime(time_t reference, char* comparetTo)
 	else if(comparetTo[0]=='-')
 	{
 		parJours=stringToInt(comparetTo+1);
-		if(parJour<0)//gestion erreur
+		if(parJours<0)//gestion erreur
 			return -1;
 		if(jours<=parJours)
 			return 1;
@@ -61,7 +59,7 @@ int compTime(time_t reference, char* comparetTo)
 	else
 	{
 		parJours=stringToInt(comparetTo);
-		if(parJour<0)//gestion erreur
+		if(parJours<0)//gestion erreur
 			return -1;
 		if(jours==parJours)
 			return 1;

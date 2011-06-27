@@ -3,16 +3,19 @@
 By : deneb							Last Modif : 27/06/11
 _____________________________________________________________*/
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <dirent.h>
 #include <string.h>
 
 #include "predicat.h"
 #include "predicatLs.h"
 #include "parcour.h"
+#include "param.h"
 
 typedef int (*func)(char*,char*);
 
-func funcs[] = {print, ls, prune, true, false, name, type, uid, gid, user, group, aTime, cTime, mTime, perm, exec};
+func funcs[] = {NULL, NULL, NULL, print, ls, prune, true, false, name, type, uid, gid, user, group, aTime, cTime, mTime, perm, exec};
 
 
 void parcours(char *path, int minDepth, int maxDepth, int tab[], char* param[], int nbParam)
@@ -33,7 +36,7 @@ void parcours_recur(char *path, int depth, int minDepth, int maxDepth, int tab[]
 	test = opendir(path);
 	if(test==NULL)
 	{
-		printf("> error : could not load %s\n", path);
+		printf("> warning : could not load %s\n", path);
 		return;
 	}
 	
@@ -62,22 +65,74 @@ void parcours_recur(char *path, int depth, int minDepth, int maxDepth, int tab[]
 
 int process(char *chemin, int tab[], char* param[], int nbParam)
 {
-	int i, isTrue = 1, returnValue;
+	int i, isTrue, returnValue, err=0;
 	
-	for(i=0; i<nbParam && isTrue;i++)
+	if(tab[0]>=END_OP) // si c'est un prédicat (sans not, si on a un oppérateur au début, c'est pas bon
+		isTrue = (funcs[tab[0]](param[0], chemin));
+	else
+		err=1;
+		
+	for(i=1; i<nbParam && !err;i++)
 	{
-		if(tab[i]>=0)
+		//printf("%d, istrue : %d\n", i, isTrue);
+		
+		returnValue = -1;
+
+		if(tab[i]>0) // >= quand on gèrera not // si la fonction est définie
 		{
-			returnValue = (funcs[tab[i]](param[i], chemin));
-			
-			if(returnValue<0)
+			if(tab[i]>=END_OP) // si on a affaire a un prédicat
 			{
-				freeParam(tab, param, nbParam);
-				return EXIT_FAILURE;
+				if(isTrue) // dans le cas d'un et
+					returnValue = (funcs[tab[i]](param[i], chemin));
+				else
+					returnValue=0;
 			}
-			
-			isTrue = isTrue && returnValue;
+			else // sinon on a affaire a un opperateur
+			{
+				if(i+1>=nbParam)
+				{
+					printf("> error : the last parameter cannot be an opperator\n");
+					err=1;
+				}
+				else if (tab[i+1]<END_OP)
+				{
+					printf("> error : there cannot be two opperators one right after another\n");
+					err=1;
+				}
+				else 
+				{
+					if(isTrue || tab[i+1]!=PRED_AND) si on a un faux, on n'applique pas la fonction
+						returnValue = (funcs[tab[i+1]](param[i+1], chemin));
+					else
+						returnValue=0;
+				}
+			}
+
+			if(returnValue<0)
+				err=1;
+			else
+			{
+				if(tab[i]==PRED_OR)
+				{
+					isTrue = isTrue || returnValue;
+					i++;
+				}
+				else
+				{
+					if(tab[i]==PRED_AND)
+						i++;
+					isTrue = isTrue && returnValue;
+				}
+			}
 		}
+	}
+	//printf("%d, istrue : %d\n", i, isTrue);
+	
+	if(err)
+	{
+		//printf("error ?\n");
+		freeParam(tab, param, nbParam);
+		exit(EXIT_FAILURE);
 	}
 	
 	return isTrue;

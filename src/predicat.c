@@ -41,8 +41,15 @@ int name(char* pattern, char* path)
 int type(char* refType,char* path)
 {
 	struct stat statFich;
-	statWOError(path, &statFich);
-	int type = statFich.st_mode & S_IFMT;
+	int type;
+	
+	if(lstat(path, &statFich)==-1)
+	{
+		printf("> error : stat lookup failure : %s \n", path);
+		return -1;
+	}
+	type = statFich.st_mode & S_IFMT;
+	
 	
 	switch(refType[0])
 	{
@@ -87,7 +94,7 @@ int uid(char* refUID,char* path)
 {
 	struct stat statFich;
 	
-	if(lstat(path, statFich)==-1)
+	if(lstat(path, &statFich)==-1)
 	{
 		printf("> error : stat lookup failure : %s \n", path);
 		return -1;
@@ -101,7 +108,7 @@ int gid (char* refGID,char* path)
 {
 	struct stat statFich;
 	
-	if(lstat(path, statFich)==-1)
+	if(lstat(path, &statFich)==-1)
 	{
 		printf("> error : stat lookup failure : %s \n", path);
 		return -1;
@@ -116,7 +123,7 @@ int user(char* refUser,char* path)
 	struct stat statFich;
 	struct passwd* statUser=NULL;
 	
-	if(lstat(path, statFich)==-1)
+	if(lstat(path, &statFich)==-1)
 	{
 		printf("> error : stat lookup failure : %s \n", path);
 		return -1;
@@ -138,10 +145,10 @@ int group(char* refGroup,char* path)
 	struct stat statFich;
 	struct group* statGroup=NULL;
 	
-	if(lstat(path, statFich)==-1)
+	if(lstat(path, &statFich)==-1)
 	{
 		printf("> error : stat lookup failure : %s \n", path);
-		return -1
+		return -1;
 	}
 	
 	statGroup = getgrgid(statFich.st_gid);
@@ -159,7 +166,7 @@ int aTime(char* refTime, char* path)
 {
 	struct stat statFich;
 	
-	if(lstat(path, statFich)==-1)
+	if(lstat(path, &statFich)==-1)
 	{
 		printf("> error : stat lookup failure : %s \n", path);
 		return -1;
@@ -173,7 +180,7 @@ int cTime(char* refTime, char* path)
 {
 	struct stat statFich;
 	
-	if(lstat(path, statFich)==-1)
+	if(lstat(path, &statFich)==-1)
 	{
 		printf("> error : stat lookup failure : %s \n", path);
 		return -1;
@@ -187,7 +194,7 @@ int mTime(char* refTime, char* path)
 {
 	struct stat statFich;
 	
-	if(lstat(path, statFich)==-1)
+	if(lstat(path, &statFich)==-1)
 	{
 		printf("> error : stat lookup failure : %s \n", path);
 		return -1;
@@ -201,7 +208,7 @@ int perm(char* refPerm, char* path)
 {
 	struct stat statFich;
 	
-	if(lstat(path, statFich)==-1)
+	if(lstat(path, &statFich)==-1)
 	{
 		printf("> error : stat lookup failure : %s \n", path);
 		return -1;
