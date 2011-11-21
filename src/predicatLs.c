@@ -23,7 +23,7 @@ int print(char* osef, char* path)
 	return 1;
 }
 
-int ls(char* osef, char* path) // manque cible du lien
+int ls(char* osef, char* path)
 {
 	struct stat statFich;
 	struct passwd* statUser=NULL;
